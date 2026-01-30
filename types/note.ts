@@ -14,3 +14,11 @@ export interface CreateNote {
 }
 
 export type NoteTag = "Todo" | "Personal" | "Meeting" | "Shopping" | "Work";
+
+export const NOTE_TAGS: NoteTag[] = [
+  "Todo",
+  "Personal",
+  "Meeting",
+  "Shopping",
+  "Work",
+];

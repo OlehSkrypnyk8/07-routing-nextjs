@@ -3,17 +3,20 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
-import type { Note } from "@/types/note";
-
+import type { Note, NoteTag } from "@/types/note";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import Modal from "@/components/Modal/Modal";
 import SearchBox from "@/components/SearchBox/SearchBox";
 
-import css from "@/app/notes/Notes.module.css";
+import css from "@/app/notes/filter/[...slug]/Notes.module.css";
 
-function App() {
+interface NotesClientProps {
+  tag: NoteTag | undefined;
+}
+
+function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -29,12 +32,13 @@ function App() {
   }, [searchInput]);
 
   const { data } = useQuery({
-    queryKey: ["notes", page, search],
+    queryKey: ["notes", page, search, tag],
     queryFn: () =>
       fetchNotes({
         page,
         perPage: 5,
         search,
+        tag,
       }),
     placeholderData: (previousData) => previousData,
   });
@@ -77,4 +81,4 @@ function App() {
   );
 }
 
-export default App;
+export default NotesClient;
